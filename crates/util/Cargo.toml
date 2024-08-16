@@ -1,0 +1,9 @@
+[package]
+name = "util"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+argon2={workspace=true}
+# argon2 这个包的features有问题，需手动导入pashword-hash的getrandom
+password-hash = { version = "0.5.0",features = ["getrandom"] }

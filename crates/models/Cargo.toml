@@ -1,0 +1,10 @@
+[package]
+name = "models"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+uuid = {workspace = true}
+chrono = {workspace = true,features = ["serde"]}
+sea-query = {workspace = true}
+sqlx = {workspace = true,features = ["uuid","chrono","any"]}

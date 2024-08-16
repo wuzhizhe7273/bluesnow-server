@@ -1,0 +1,15 @@
+[package]
+name = "server"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+anyhow={workspace=true}
+axum={workspace=true}
+tokio={workspace=true}
+sqlx={workspace=true,features = ["runtime-tokio-rustls","sqlite","any","chrono","uuid"]}
+sea-query={workspace=true,features = ["with-uuid","with-chrono","with-json"]}
+iden={workspace=true}
+models={workspace = true }
+util={workspace = true}
+uuid= {workspace = true,features = ["v7"]}
