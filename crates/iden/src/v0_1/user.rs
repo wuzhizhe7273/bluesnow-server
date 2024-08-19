@@ -1,7 +1,7 @@
 use sea_query::Iden;
 
 /// 用户表Iden
-#[derive(Iden)]
+#[derive(Copy,Clone,Iden)]
 pub enum User {
     Table,
     /// 类型：UUID

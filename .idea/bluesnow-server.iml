@@ -10,6 +10,8 @@
       <sourceFolder url="file://$MODULE_DIR$/crates/result/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/crates/server/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/crates/util/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/crates/macros/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/crates/macros/examples" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/data" />
       <excludeFolder url="file://$MODULE_DIR$/target" />
     </content>

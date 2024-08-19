@@ -1,7 +1,11 @@
+use clap::Parser;
+use crate::cli::Cli;
+
+mod migrate;
+mod cli;
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
-    let server_config=server::ServerConfig::new();
-    let server = server::Server::new(server_config);
-    server.run().await?;
+    let cli=Cli::parse();
+    cli.run().await?;
     Ok(())
 }

@@ -4,7 +4,15 @@ version = "0.1.0"
 edition = "2021"
 default-run = "cli"
 
+[features]
+default=["sqlite","log"]
+log=["server/log"]
+sqlite=["server/sqlite"]
+postgres=["server/postgres"]
+mysql=["server/mysql"]
+
 [dependencies]
 tokio={workspace=true,features = ["rt-multi-thread","macros"]}
 server={workspace=true}
 anyhow={workspace=true}
+clap = { workspace = true, features = ["derive"] }

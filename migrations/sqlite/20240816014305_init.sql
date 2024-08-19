@@ -1,5 +1,12 @@
 -- Add migration script here
 
+-- 创建meta_info表
+CREATE TABLE `meta_info` (
+    `version` VARCHAR(16) NOT NULL,
+    `database` VARCHAR(32) NOT NULL DEFAULT 'SQLITE',
+    `initialized` BOOLEAN NOT NULL DEFAULT false
+);
+
 -- 创建user表 
 CREATE TABLE `user` (
     `uid` UUID PRIMARY KEY,

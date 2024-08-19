@@ -2,12 +2,18 @@
 members = ["crates/*"]
 resolver = "2"
 
+[profile.release]
+lto = true
+strip= true
+codegen-units = 1
+
 [workspace.dependencies]
 server={path = "crates/server"}
 iden={path = "crates/iden"}
 util={path = "crates/util"}
 result={path = "crates/result"}
 models={path = "crates/models"}
+macros={path = "crates/macros"}
 sqlx="0.8.0"
 sea-query="0.31.0"
 clap="4.5.15"
@@ -23,3 +29,13 @@ thiserror="1.0.63"
 anyhow="1.0.86"
 figment="0.10.19"
 chrono = "0.4.38"
+cfg-if = "1.0.0"
+strum = "0.26.3"
+tracing = "0.1.40"
+tracing-subscriber = "0.3.18"
+tower-http = "0.5.2"
+syn = "2.0.74"
+proc-macro2 = "1.0.86"
+quote = "1.0.36"
+darling = "0.20.10"
+heck="0.5.0"
