@@ -1,6 +1,6 @@
 pub mod hash;
 pub mod pwd;
-mod query;
+pub mod query;
 mod row;
 mod model;
 

@@ -1,7 +1,7 @@
 use chrono::Utc;
 use sea_query::{Expr, Query};
 use sqlx::{Acquire, AnyConnection};
-use util::{sea_query_statement_to_string, DataObject};
+use util::DataObject;
 use uuid::Uuid;
 use models::{r#do::user::{User}};
 use models::r#do::api::{Api, ApiIden};
@@ -9,6 +9,9 @@ use models::r#do::role::{Role, RoleIden};
 use models::r#do::role_mtm_api::RoleMtmAPiIden;
 use models::r#do::user::UserIden;
 use models::r#do::user_mtm_role::UserMtmRoleIden;
+
+use sea_query_binder::SqlxBinder;
+use util::query::get_query_builder;
 
 pub async fn register(
     conn: &mut AnyConnection,
@@ -32,7 +35,7 @@ pub async fn register(
 
 #[allow(dead_code)]
 pub async  fn get_related_roles(conn:&mut AnyConnection,uid:Uuid)->result::Result<Vec<Role>>{
-    let query=sea_query_statement_to_string!(
+    let (query,values)=
         Query::select()
         // select all fields
         .columns([
@@ -56,13 +59,13 @@ pub async  fn get_related_roles(conn:&mut AnyConnection,uid:Uuid)->result::Resul
             Expr::col((UserMtmRoleIden::Table,UserMtmRoleIden::Rid)).equals((RoleIden::Table,RoleIden::Rid))
         )
          // where user.uid=${uid}
-        .and_where(Expr::col((UserIden::Table,UserIden::Uid)).eq(uid));conn);
-    let roles=sqlx::query_as::<_,Role>(&query).fetch_all(conn).await?;
+        .and_where(Expr::col((UserIden::Table,UserIden::Uid)).eq(uid)).build_any_sqlx(&*get_query_builder(conn));
+    let roles=sqlx::query_as_with::<_,Role,_>(&query,values).fetch_all(conn).await?;
     Ok(roles)
 }
 #[allow(dead_code)]
 pub async fn get_related_apis(conn:&mut AnyConnection,uid:Uuid)->result::Result<Vec<Api>>{
-    let query=sea_query_statement_to_string!(
+    let (query,values)=
         Query::select()
         // select all fields
         .columns([ApiIden::Aid,ApiIden::Name,ApiIden::Path,ApiIden::Method,ApiIden::Code,ApiIden::Created,ApiIden::Changed])
@@ -89,14 +92,14 @@ pub async fn get_related_apis(conn:&mut AnyConnection,uid:Uuid)->result::Result<
             Expr::col((RoleMtmAPiIden::Table,RoleMtmAPiIden::Aid)).equals((ApiIden::Table,ApiIden::Aid))
         )
         // where user.uid=${uid}
-        .and_where(Expr::col((UserIden::Table,UserIden::Uid)).eq(uid));conn);
-    let apis=sqlx::query_as::<_,Api>(&query).fetch_all(conn).await?;
+        .and_where(Expr::col((UserIden::Table,UserIden::Uid)).eq(uid)).build_any_sqlx(&*get_query_builder(conn));
+    let apis=sqlx::query_as_with::<_,Api,_>(&query,values).fetch_all(conn).await?;
     Ok(apis)
 }
 
 #[allow(dead_code)]
 pub async fn get_by_uid(conn: &mut AnyConnection, uid: Uuid) -> anyhow::Result<Option<User>> {
-    let query = sea_query_statement_to_string!(Query::select()
+    let (query,values) = Query::select()
         .columns([
             UserIden::Uid,
             UserIden::Username,
@@ -107,10 +110,8 @@ pub async fn get_by_uid(conn: &mut AnyConnection, uid: Uuid) -> anyhow::Result<O
             UserIden::Created,
         ])
         .from(UserIden::Table)
-        .and_where(Expr::col(UserIden::Uid).eq(uid));
-        conn
-    );
-    let user = sqlx::query_as::<_, User>(&query)
+        .and_where(Expr::col(UserIden::Uid).eq(uid)).build_any_sqlx(&*get_query_builder(conn));
+    let user = sqlx::query_as_with::<_, User,_>(&query,values)
         .fetch_optional(conn)
         .await?;
     Ok(user)
@@ -121,7 +122,7 @@ pub async fn get_by_username(
     conn: &mut AnyConnection,
     username: &str,
 ) -> result::Result<Option<User>> {
-    let query = sea_query_statement_to_string!(Query::select()
+    let (query,values) = Query::select()
         .columns([
             UserIden::Uid,
             UserIden::Username,
@@ -132,10 +133,11 @@ pub async fn get_by_username(
             UserIden::Created,
         ])
         .from(UserIden::Table)
-        .and_where(Expr::col(UserIden::Username).eq(username));
-        conn);
+        .and_where(Expr::col(UserIden::Username).eq(username))
+        .build_any_sqlx(&*get_query_builder(conn));
 
-    let user = sqlx::query_as::<_, User>(&query)
+
+    let user = sqlx::query_as_with::<_, User,_>(&query,values)
         .fetch_optional(conn)
         .await?;
     Ok(user)
@@ -144,11 +146,10 @@ pub async fn get_by_username(
 #[allow(dead_code)]
 pub async fn delete_by_uid(conn: &mut AnyConnection, uid: Uuid) -> anyhow::Result<Uuid> {
     let conn = &mut *conn.acquire().await?;
-    let query = sea_query_statement_to_string!(Query::delete()
+    let query_builder=get_query_builder(conn);
+    let (query,values) = Query::delete()
         .and_where(Expr::col(UserIden::Uid).eq(uid))
-        .from_table(UserIden::Table);
-        conn
-    );
-    sqlx::query(&query).execute(conn).await?;
+        .from_table(UserIden::Table).build_any_sqlx(&*query_builder);
+    sqlx::query_with(&query,values).execute(conn).await?;
     Ok(uid)
 }

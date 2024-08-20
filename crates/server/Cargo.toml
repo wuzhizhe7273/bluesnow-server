@@ -14,8 +14,9 @@ anyhow={workspace=true}
 axum={workspace=true}
 tokio={workspace=true,features = ["signal"]}
 result = {workspace = true}
-sqlx={workspace=true,features = ["runtime-tokio-rustls","chrono","uuid"]}
+sqlx={workspace=true,features = ["runtime-tokio-rustls","chrono","uuid","any","json"]}
 sea-query={workspace=true,features = ["with-uuid","with-chrono","with-json"]}
+sea-query-binder = {workspace = true,features = ["with-uuid","with-chrono","sqlx-any","runtime-tokio-rustls","with-json"]}
 models={workspace = true }
 util={workspace = true}
 uuid= {workspace = true,features = ["v7","serde"]}

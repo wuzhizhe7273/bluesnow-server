@@ -9,7 +9,6 @@ proc-macro2 = {workspace = true}
 syn = {workspace = true}
 quote = {workspace = true}
 darling = {workspace = true}
-sqlx={workspace=true}
 uuid={workspace=true}
 chrono={workspace=true}
 heck={workspace=true}

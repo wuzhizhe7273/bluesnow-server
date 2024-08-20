@@ -1,9 +1,9 @@
-use crate::{r#do::utils::AppEntity};
+use crate::r#do::utils::AppEntity;
 use chrono::{DateTime, Utc};
 use sea_query::enum_def;
-use uuid::Uuid;
 use util::{DataObject, FromAnyRow};
-
+use uuid::Uuid;
+use sea_query_binder::SqlxBinder;
 #[enum_def]
 #[derive(FromAnyRow,serde::Deserialize,Clone,DataObject)]
 pub struct User{

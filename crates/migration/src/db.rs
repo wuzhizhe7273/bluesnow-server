@@ -2,7 +2,9 @@ use models::r#do::meta_info::{MetaInfo, MetaInfoIden};
 use sea_query::Query;
 use sqlx::AnyConnection;
 use std::error::Error;
-use util::{sea_query_statement_to_string, DataObject};
+use sea_query_binder::SqlxBinder;
+use util::{DataObject};
+use util::query::get_query_builder;
 
 #[derive(sqlx::FromRow)]
 pub struct Name {
@@ -11,13 +13,12 @@ pub struct Name {
 
 /// 获取数据库info信息
 pub async fn get_info(conn: &mut AnyConnection) -> Result<Option<MetaInfo>, sqlx::Error> {
-    let query = sea_query_statement_to_string!(
-    Query::select()
+    let (query,values)=Query::select()
     .columns([MetaInfoIden::Version,MetaInfoIden::Database,MetaInfoIden::Initialized])
-    .from(MetaInfoIden::Table);
-    conn
-    );
-    let info = sqlx::query_as::<_, MetaInfo>(&query)
+    .from(MetaInfoIden::Table)
+        .build_any_sqlx(&*get_query_builder(conn))
+    ;
+    let info = sqlx::query_as_with::<_, MetaInfo,_>(&query,values)
         .fetch_optional(conn)
         .await?;
     Ok(info)
