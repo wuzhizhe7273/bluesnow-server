@@ -1,15 +1,16 @@
 use axum::Router;
 use tower_http::trace::{DefaultMakeSpan, DefaultOnRequest, DefaultOnResponse, HttpMakeClassifier, TraceLayer};
-use tracing::Level;
 use tracing::level_filters::LevelFilter;
-use tracing_subscriber::{fmt, EnvFilter};
+use tracing::Level;
 use tracing_subscriber::layer::SubscriberExt;
 use tracing_subscriber::util::SubscriberInitExt;
+use tracing_subscriber::{fmt, EnvFilter};
 
 pub struct Log{
     level:Level
 }
 
+#[derive(Debug,Clone)]
 pub struct LogConfig{
     pub level:String
 }

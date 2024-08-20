@@ -42,6 +42,8 @@ INSERT INTO `role` (`rid`, `name`, `desc`, `is_base`) VALUES (
     '01916F31-01E6-73F0-8806-8588B3083690', 'Poster', '发帖人', true
 ), (
     '01916F33-10A1-7308-83EA-843BACD17818', 'Guest', '访客', true
+), (
+    '01917036-8EDD-719F-A011-31C36BA9F7BE', 'Public', '公开', true
 );
 -- 创建api表
 CREATE TABLE `api` (

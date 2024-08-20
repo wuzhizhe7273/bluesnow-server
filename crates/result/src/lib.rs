@@ -1,10 +1,10 @@
 mod code;
 
-use std::io;
+use crate::code::ErrorCode;
 use axum::http::StatusCode;
 use axum::response::{IntoResponse, Response};
 use axum::Json;
-use crate::code::ErrorCode;
+use std::io;
 
 #[derive(Debug, thiserror::Error)]
 pub enum Error {
@@ -27,7 +27,9 @@ pub enum Error {
     #[error("build query statement failed:{0}")]
     Query(sea_query::error::Error),
     #[error("you not have permission")]
-    PermissionDenied
+    PermissionDenied,
+    #[error("{0}")]
+    Unauthorized(String)
 }
 
 impl Error {
@@ -41,6 +43,7 @@ impl Error {
             Error::SqlBuilder(e)=>(StatusCode::INTERNAL_SERVER_ERROR,ErrorCode::SqlBuilderError,Some(e.to_string())),
             Error::InvalidInput(e)=>(StatusCode::BAD_REQUEST,ErrorCode::InvalidInput,Some(e.to_string())),
             Error::PermissionDenied=>(StatusCode::FORBIDDEN,ErrorCode::PermissionDenied,None),
+            Error::Unauthorized(s)=>(StatusCode::UNAUTHORIZED,ErrorCode::Unauthorized,Some(s.to_string())),
             _=>(StatusCode::INTERNAL_SERVER_ERROR,ErrorCode::InternalServeError,None)
         };
         (status, ResponseError::new(code, &message, details))

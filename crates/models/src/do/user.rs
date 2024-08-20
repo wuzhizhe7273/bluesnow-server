@@ -29,6 +29,26 @@ impl AppEntity for User {
 }
 
 impl User {
+    /// 获得User
+    pub async fn get_by_uid(conn: &mut AnyConnection, uid: Uuid) -> result::Result<Option<Self>> {
+        let (query, values) = Query::select()
+            .columns([
+                UserIden::Uid,
+                UserIden::Username,
+                UserIden::Password,
+                UserIden::Email,
+                UserIden::ActiveRid,
+                UserIden::Created,
+                UserIden::Changed,
+            ])
+            .from(UserIden::Table)
+            .and_where(Expr::col(UserIden::Uid).eq(uid))
+            .build_any_sqlx(&*get_query_builder(conn));
+        let user: Option<Self> = sqlx::query_as_with(&query, values)
+            .fetch_optional(conn)
+            .await?;
+        Ok(user)
+    }
     // 添加角色
     pub async fn add_roles(
         self,

@@ -1,14 +1,18 @@
+use crate::config::jwt::JwtConfig;
 #[cfg(feature = "log")]
 use crate::log::LogConfig;
 use cfg_if::cfg_if;
 use db::DbConfig;
 
 mod db;
+mod jwt;
+#[derive(Debug,Clone)]
 pub struct ServerConfig {
     pub port: u16,
     pub db: DbConfig,
     #[cfg(feature = "log")]
     pub log: LogConfig,
+    pub jwt: JwtConfig,
 }
 
 impl ServerConfig {
@@ -21,12 +25,16 @@ impl ServerConfig {
         let log = LogConfig {
             level: "debug".to_string(),
         };
-       cfg_if! {
+        let jwt = JwtConfig {
+            secret: "test secret".to_string(),
+        };
+        cfg_if! {
             if #[cfg(feature="log")]{
                 Self{
                     port,
                     db,
-                    log
+                    log,
+                   jwt
                 }
             }else{
                 Self{

@@ -9,5 +9,6 @@ pub enum  ErrorCode{
     SqlBuilderError,
     InvalidInput,
     InternalServeError,
-    PermissionDenied
+    PermissionDenied,
+    Unauthorized
 }
