@@ -25,7 +25,9 @@ pub enum Error {
     #[error(transparent)]
     JoinError(#[from] tokio::task::JoinError),
     #[error("build query statement failed:{0}")]
-    Query(sea_query::error::Error)
+    Query(sea_query::error::Error),
+    #[error("you not have permission")]
+    PermissionDenied
 }
 
 impl Error {
@@ -38,6 +40,7 @@ impl Error {
             Error::Database(e)=>(StatusCode::INTERNAL_SERVER_ERROR,ErrorCode::DatabaseError,Some(e.to_string())),
             Error::SqlBuilder(e)=>(StatusCode::INTERNAL_SERVER_ERROR,ErrorCode::SqlBuilderError,Some(e.to_string())),
             Error::InvalidInput(e)=>(StatusCode::BAD_REQUEST,ErrorCode::InvalidInput,Some(e.to_string())),
+            Error::PermissionDenied=>(StatusCode::FORBIDDEN,ErrorCode::PermissionDenied,None),
             _=>(StatusCode::INTERNAL_SERVER_ERROR,ErrorCode::InternalServeError,None)
         };
         (status, ResponseError::new(code, &message, details))

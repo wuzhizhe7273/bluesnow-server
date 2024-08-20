@@ -101,7 +101,7 @@ pub async fn check_initialized(conn: &mut AnyConnection) -> Result<InitialStatus
 pub async fn seed_data<M:DataObject>(conn: &mut AnyConnection,data:&str) -> Result<(), Box<dyn Error>> {
     let data: Vec<M> = serde_json::from_str(data).map_err(|e| Box::new(e))?;
     for item in data {
-        item.save(conn).await?
+        item.save(conn).await?;
     }
     Ok(())
 }

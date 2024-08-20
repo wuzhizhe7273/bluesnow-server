@@ -56,14 +56,14 @@ impl DataObjectContext {
             .collect::<Vec<_>>();
         quote! {
             impl DataObject for #ident {
-                async fn save(self, conn: &mut sqlx::AnyConnection) -> result::Result<()> {
+                async fn save(self, conn: &mut sqlx::AnyConnection) -> result::Result<Self> {
                     let (query,values)=sea_query::Query::insert()
                         .columns([#(#enum_ident::#enum_variants),*])
-                        .values([#(Into::into(self.#field_name)),*])?
+                        .values([#(Into::into(self.#field_name.clone())),*])?
                         .into_table(#enum_ident::Table)
                         .build_any_sqlx(&*util::query::get_query_builder(conn));
                     sqlx::query_with(&query,values).execute(conn).await?;
-                    Ok(())
+                    Ok(self)
                 }
             }
         }

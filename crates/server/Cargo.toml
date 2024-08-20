@@ -12,6 +12,7 @@ log=["tracing","tracing-subscriber","util/log"]
 [dependencies]
 anyhow={workspace=true}
 axum={workspace=true}
+axum-extra = {workspace = true,features = ["typed-header"]}
 tokio={workspace=true,features = ["signal"]}
 result = {workspace = true}
 sqlx={workspace=true,features = ["runtime-tokio-rustls","chrono","uuid","any","json"]}

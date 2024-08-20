@@ -7,6 +7,6 @@ use sea_query_binder::SqlxBinder;
 #[enum_def]
 #[derive(Deserialize,DataObject,FromAnyRow)]
 pub struct UserMtmRole {
-    uid:Uuid,
-    rid:Uuid
+    pub uid:Uuid,
+    pub rid:Uuid
 }

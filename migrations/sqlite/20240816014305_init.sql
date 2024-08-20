@@ -2,9 +2,15 @@
 
 -- 创建meta_info表
 CREATE TABLE `meta_info` (
+    `id` VARCHAR(16) NOT NULL,
     `version` VARCHAR(16) NOT NULL,
     `database` VARCHAR(32) NOT NULL DEFAULT 'SQLITE',
     `initialized` BOOLEAN NOT NULL DEFAULT false
+);
+
+-- 初始化表 `meta_info`
+INSERT INTO `meta_info` VALUES (
+    'meta', '0.1.0', 'sqlite', false
 );
 
 -- 创建user表 
@@ -28,6 +34,15 @@ CREATE TABLE `role` (
     `changed` DATETIME NOT NULL DEFAULT CURRENT_DATE
 );
 
+INSERT INTO `role` (`rid`, `name`, `desc`, `is_base`) VALUES (
+    '01916F2A-9935-71CB-8DAE-D37DA6B6FC39', 'SuperUser', '超级用户', true
+), (
+    '01916F2F-DE60-719F-B184-DDF0AA0ED604', 'Administrator', '管理员', true
+), (
+    '01916F31-01E6-73F0-8806-8588B3083690', 'Poster', '发帖人', true
+), (
+    '01916F33-10A1-7308-83EA-843BACD17818', 'Guest', '访客', true
+);
 -- 创建api表
 CREATE TABLE `api` (
     `aid` UUID PRIMARY KEY,
