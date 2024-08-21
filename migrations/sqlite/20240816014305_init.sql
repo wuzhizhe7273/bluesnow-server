@@ -84,6 +84,10 @@ CREATE TABLE `taxonomy` (
     `changed` DATETIME NOT NULL DEFAULT CURRENT_DATE
 );
 
+INSERT INTO `taxonomy` (`tid`, `name`, `path`, `desc`) VALUES (
+    '01917263-C9C5-7178-A60B-5BA9436E8D5D', '根节点', '/','所有taxonomy的根'
+);
+
 -- 创建node_type表
 CREATE TABLE `node_type` (
     `ntid` UUID PRIMARY KEY,

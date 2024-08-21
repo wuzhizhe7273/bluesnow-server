@@ -5,3 +5,6 @@ pub mod role;
 pub mod api;
 pub mod user_mtm_role;
 pub mod role_mtm_api;
+pub mod taxonomy;
+pub mod node;
+pub mod node_mtm_taxonomy;

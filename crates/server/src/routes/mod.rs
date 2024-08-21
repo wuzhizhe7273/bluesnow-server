@@ -19,6 +19,7 @@ impl Routes{
         Router::new()
             .route("/ping",get(||async { "server is running" }))
             .route("/user/register",post(handler::user::register))
+            .route("/user/login",post(handler::user::login))
             .layer(from_fn_with_state(self.context.clone(),mid_access_control))
             .with_state(self.context)
     }

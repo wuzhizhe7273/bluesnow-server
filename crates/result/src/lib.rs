@@ -29,7 +29,9 @@ pub enum Error {
     #[error("you not have permission")]
     PermissionDenied,
     #[error("{0}")]
-    Unauthorized(String)
+    Unauthorized(String),
+    #[error("{0}")]
+    JwtError(#[from] jsonwebtoken::errors::Error)
 }
 
 impl Error {

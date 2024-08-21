@@ -1,7 +1,11 @@
 use crate::context::ServerContext;
+use crate::middleware::jwt::Claims;
 use crate::repo;
-use models::req::user::RegisterRequest;
-use models::resp::user::RegisterResponse;
+use models::r#do::user::User;
+use models::r#do::utils::ToResult;
+use models::req::user::{LoginRequest, RegisterRequest};
+use models::resp::user::{LoginResponse, RegisterResponse};
+use std::time::Duration;
 
 pub async fn register(
     context: ServerContext,
@@ -15,9 +19,14 @@ pub async fn register(
     Ok(resp)
 }
 
-// pub async fn login(context:ServerContext,req:LoginRequest)->result::Result<LoginResponse>{
-//     let conn=&context.db;
-//     let user=repo::user::get_by_username(conn,&req.username).await?.to_result()?;
-//     util::pwd::verify(&req.password,&user.password).await?;
-//     todo!()
-// }
+pub async fn login(context: ServerContext, req: LoginRequest) -> result::Result<LoginResponse> {
+    let conn = &mut context.db.acquire().await?;
+    let user = User::get_by_username(conn, &req.username)
+        .await?
+        .to_result()?;
+    util::pwd::verify(&req.password, &user.password).await?;
+    let token = Claims::new(user.uid, Duration::from_secs(context.config.jwt.exp))
+        .encode(&context.config.jwt.encoding_key())?;
+    let resp = LoginResponse::new(token);
+    Ok(resp)
+}

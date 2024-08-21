@@ -27,6 +27,7 @@ impl ServerConfig {
         };
         let jwt = JwtConfig {
             secret: "test secret".to_string(),
+            exp:60*60*12
         };
         cfg_if! {
             if #[cfg(feature="log")]{
@@ -39,6 +40,7 @@ impl ServerConfig {
             }else{
                 Self{
                     port,
+                    jwt,
                     db
                 }
             }

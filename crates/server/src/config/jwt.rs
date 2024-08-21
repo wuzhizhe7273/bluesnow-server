@@ -2,7 +2,8 @@ use jsonwebtoken::{DecodingKey, EncodingKey};
 
 #[derive(Debug,Clone)]
 pub struct JwtConfig{
-    pub(crate) secret:String
+    pub secret:String,
+    pub exp:u64
 }
 impl JwtConfig{
     pub fn encoding_key(&self)->EncodingKey{

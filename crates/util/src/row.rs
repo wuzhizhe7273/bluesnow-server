@@ -22,6 +22,13 @@ impl FromAnyRow<String> for AnyRow {
         self.try_get(index)
     }
 }
+
+impl FromAnyRow<Option<String>> for AnyRow{
+    fn any_parse(&self, index: &str) -> Result<Option<String>, Error> {
+        let res:Option<String>=self.try_get(index)?;
+        Ok(res)
+    }
+}
 impl FromAnyRow<Uuid> for AnyRow {
     fn any_parse(&self, index: &str) -> Result<Uuid, sqlx::Error> {
         let res: &str = self.try_get(index)?;

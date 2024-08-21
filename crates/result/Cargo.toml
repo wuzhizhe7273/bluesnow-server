@@ -13,3 +13,4 @@ sqlx = {workspace = true,features = ["runtime-tokio-rustls"]}
 sea-query = {workspace = true}
 garde = {workspace = true}
 tokio = {workspace = true}
+jsonwebtoken = {workspace = true}
