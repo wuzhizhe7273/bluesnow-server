@@ -18,3 +18,4 @@ chrono = {workspace = true}
 macros ={workspace = true}
 serde = {workspace = true}
 sea-query = {workspace = true}
+serde_json={workspace=true}

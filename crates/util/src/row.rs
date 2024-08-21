@@ -6,12 +6,12 @@ pub trait FromAnyRow<T>: Row {
     fn any_parse(&self, index: &str) -> Result<T, sqlx::Error>;
 }
 
-impl FromAnyRow<bool> for AnyRow{
+impl FromAnyRow<bool> for AnyRow {
     fn any_parse(&self, index: &str) -> Result<bool, Error> {
         self.try_get(index)
     }
 }
-impl FromAnyRow<Option<bool>> for AnyRow{
+impl FromAnyRow<Option<bool>> for AnyRow {
     fn any_parse(&self, index: &str) -> Result<Option<bool>, Error> {
         self.try_get(index)
     }
@@ -23,9 +23,9 @@ impl FromAnyRow<String> for AnyRow {
     }
 }
 
-impl FromAnyRow<Option<String>> for AnyRow{
+impl FromAnyRow<Option<String>> for AnyRow {
     fn any_parse(&self, index: &str) -> Result<Option<String>, Error> {
-        let res:Option<String>=self.try_get(index)?;
+        let res: Option<String> = self.try_get(index)?;
         Ok(res)
     }
 }
@@ -58,11 +58,38 @@ impl FromAnyRow<Option<Uuid>> for AnyRow {
 impl FromAnyRow<DateTime<Utc>> for AnyRow {
     fn any_parse(&self, index: &str) -> Result<DateTime<Utc>, Error> {
         let res: &str = self.try_get(index)?;
-        let res = DateTime::parse_from_rfc3339(res).map_err(|e| Error::ColumnDecode {
-            index: index.into(),
-            source: Box::new(e),
-        })?.to_utc();
-        
+        let res = DateTime::parse_from_rfc3339(res)
+            .map_err(|e| Error::ColumnDecode {
+                index: index.into(),
+                source: Box::new(e),
+            })?
+            .to_utc();
+
+        Ok(res)
+    }
+}
+
+impl FromAnyRow<serde_json::Value> for AnyRow {
+    fn any_parse(&self, index: &str) -> Result<serde_json::Value, sqlx::Error> {
+        let res: &str = self.try_get(index)?;
+        let res: serde_json::Value =
+            serde_json::from_str(res).map_err(|e| Error::ColumnDecode {
+                index: index.into(),
+                source: Box::new(e),
+            })?;
+        Ok(res)
+    }
+}
+
+impl FromAnyRow<Option<serde_json::Value>> for AnyRow {
+    fn any_parse(&self, index: &str) -> Result<Option<serde_json::Value>, sqlx::Error> {
+        let res: Option<&str> = self.try_get(index)?;
+        let res = if let Some(res) = res {
+            let res: serde_json::Value = self.any_parse(index)?;
+            Some(res)
+        } else {
+            None
+        };
         Ok(res)
     }
 }

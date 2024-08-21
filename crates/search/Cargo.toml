@@ -10,3 +10,4 @@ chrono = {workspace = true,features = ["serde"]}
 serde_json = {workspace=true}
 uuid = {workspace = true,features = ["serde"]}
 serde = {workspace = true}
+meilisearch-sdk = {workspace = true}

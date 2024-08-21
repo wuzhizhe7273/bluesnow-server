@@ -55,9 +55,6 @@ pub enum PgNode{
     /// 类型：UUID
     ///  翻译源节点
     Tnid,
-    /// 类型:BOOLEAN
-    ///  是否是翻译节点
-    Translate,
     /// 类型:json
     ///  节点数据,json格式扩展字段
     Data,

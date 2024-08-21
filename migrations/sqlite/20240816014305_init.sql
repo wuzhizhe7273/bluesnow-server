@@ -85,7 +85,7 @@ CREATE TABLE `taxonomy` (
 );
 
 INSERT INTO `taxonomy` (`tid`, `name`, `path`, `desc`) VALUES (
-    '01917263-C9C5-7178-A60B-5BA9436E8D5D', '根节点', '/','所有taxonomy的根'
+    '01917263-C9C5-7178-A60B-5BA9436E8D5D', '根节点', '/', '所有taxonomy的根'
 );
 
 -- 创建node_type表

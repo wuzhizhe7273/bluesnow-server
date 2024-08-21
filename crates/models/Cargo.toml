@@ -19,3 +19,4 @@ result = {workspace = true}
 util={workspace=true}
 iden={workspace = true}
 sea-query-binder = {workspace = true,features = ["with-chrono","with-uuid","sqlx-any"]}
+serde_json={workspace=true}
