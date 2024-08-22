@@ -13,6 +13,7 @@
       <sourceFolder url="file://$MODULE_DIR$/crates/macros/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/crates/macros/examples" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/crates/search/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/crates/cdc/src" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/data" />
       <excludeFolder url="file://$MODULE_DIR$/target" />
     </content>

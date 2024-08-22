@@ -360,6 +360,14 @@ dependencies = [
 ]
 
 [[package]]
+name = "cdc"
+version = "0.1.0"
+dependencies = [
+ "sqlx",
+ "strum",
+]
+
+[[package]]
 name = "cedarwood"
 version = "0.4.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"

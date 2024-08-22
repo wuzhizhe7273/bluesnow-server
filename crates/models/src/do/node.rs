@@ -120,4 +120,15 @@ impl NodeReversion {
         sqlx::query_with(&query, values).execute(conn).await?;
         Ok(self)
     }
+
+    pub async fn delete_by_nid(conn:&mut AnyConnection,ids:&[Uuid])->result::Result<()>{
+        let query=Query::delete()
+            .from_table(NodeReversionIden::Table);
+        for id in ids{
+            query.and_where(Expr::col(NodeReversionIden::Nid).eq(id));
+        }
+        let (query,values)=query.build_any_sqlx(conn);
+        sqlx::query_with(&query,values).execute(conn).await?;
+        Ok(())
+    }
 }

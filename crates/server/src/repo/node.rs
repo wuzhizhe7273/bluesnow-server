@@ -3,7 +3,7 @@ use models::r#do::node::{Node, NodeReversion};
 use sqlx::{Acquire, AnyConnection};
 use util::DataObject;
 
-/// 必须传入事务
+/// 创建新节点
 pub async fn create(conn: &mut AnyConnection, node: Node) -> result::Result<Node> {
     let mut tx =conn.begin().await?;
     NodeReversion {
@@ -22,7 +22,12 @@ pub async fn create(conn: &mut AnyConnection, node: Node) -> result::Result<Node
     Ok(node)
 }
 
-pub async fn delete_by_nid(conn:&mut AnyConnection)->result::Result<()>{
+/// 删除节点
+pub async fn delete(conn:&mut AnyConnection,node:Node)->result::Result<()>{
     let mut tx=conn.begin().await?;
-    todo!()
+    NodeReversion::delete_by_nid(&mut *tx,&[node.nid]).await?;
+    node.delete(&mut *tx).await?;
+    tx.commit().await?;
+    Ok(())
+
 }
