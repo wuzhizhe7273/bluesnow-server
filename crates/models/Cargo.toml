@@ -11,8 +11,8 @@ mysql=["sqlx/mysql"]
 [dependencies]
 uuid = {workspace = true,features = ["serde","v7"]}
 chrono = {workspace = true,features = ["serde"]}
-sea-query = {workspace = true,features = ["with-uuid","with-chrono","attr"]}
-sqlx= {workspace = true,features = ["uuid","chrono","any"]}
+sea-query = {workspace = true,features = ["with-uuid","with-chrono","attr","with-json"]}
+sqlx= {workspace = true,features = ["uuid","chrono","json","any"]}
 garde = {workspace = true,features = ["derive","email"]}
 serde = {workspace = true,features = ["derive"]}
 result = {workspace = true}
